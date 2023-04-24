@@ -412,6 +412,37 @@
     improves the accuracy of phone recognition. Therefore, a context-dependent HMM/GMM system is required before training a hybrid system
     to provide the context-dependent phone labels that the NN needs to learn the mapping between the acoustic features and the corresponding
     phone labels.
+
+    As people have varied pronounciations and different accents, single pre-trained models can struggle to pick up such variances. Therefore, we
+    introduce a technique called speaker adaption. Which for a context-dependent model such as the HMM/GMM can have two approaches for achieving
+    speaker adaption, namely feature-space transforms and model-based adaption. Feature-space transforms involve transforming the input acoustic 
+    features of a speaker into a space that is better aligned with the average acoustic characteristics of the training data. One common 
+    feature-space transform method is maximum likelihood linear regression (MLLR), which learns a linear transformation matrix to adapt 
+    the acoustic model for a specific speaker. MLLR has been shown to be effective for speaker adaptation in context-dependent hybrid systems, 
+    especially when a small amount of speaker-specific training data is available.
+
+    Model-based adaptation involves adapting the parameters of the acoustic model directly using speaker-specific training data. One common 
+    model-based adaptation method is speaker-adaptive training (SAT), which involves retraining the acoustic model using speaker-specific data. 
+    SAT has been shown to be effective for speaker adaptation in context-dependent hybrid systems, especially when a large amount of 
+    speaker-specific training data is available. A major difference between feature-space transforms and model-based adaptation is the amount 
+    of speaker-specific data required. \textit{Feature-space transforms can be effective even with a small amount of speaker-specific training data}, 
+    while \textit{model-based adaptation requires a larger amount of speaker-specific data to be effective}. \textit{However, model-based adaptation can 
+    potentially achieve higher accuracy than feature-space transforms, especially when a large amount of speaker-specific training data is 
+    available.}
+
+    In summary, both feature-space transforms and model-based adaptation are effective methods for speaker adaptation in context-dependent hybrid 
+    systems, but they differ in the amount of speaker-specific data required and the potential accuracy gains. Feature-space transforms can be effective
+    with a small amount of speaker-specific data, while model-based adaptation requires more data but can potentially achieve higher accuracy.
+
+
+    % Sub-problem 4
+    \begin{subproblem}
+        It might be possible to obtain better acoustic likelihood estimates by combining HMM/GMM and hybrid HMM / neural network systems. How could this be done at the frame level?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    
 \end{homeworkProblem}
 
 \end{document}
