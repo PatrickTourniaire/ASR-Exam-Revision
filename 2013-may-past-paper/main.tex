@@ -441,6 +441,119 @@
     \end{subproblem}
 
     \textbf{Answer}
+    
+    Yes, this is possible and one way to achieve this would be to have a HMM/GMM model which estimates the likelihood of the acoustic observation
+    given the hidden state. Then, the neural network can further refine these estimates based on the features extracted from the acoustic signals.
+    One way would be to use a feed-forward neural network which takes the HMM/GMM output as input, and then generates a refined likelihood estimate
+    based on the output.
+
+    Another approach is to use a recurrent neural network (RNN) as the neural component of the hybrid system. The RNN would take as input a sequence 
+    of frames and their corresponding HMM/GMM likelihood estimates, and generate a sequence of refined likelihood estimates. This approach is 
+    particularly useful when modeling long-term dependencies in the acoustic signal.
+    
+\end{homeworkProblem}
+
+
+% Problem - 3
+\begin{homeworkProblem}
+
+    % Sub-problem 1
+    \begin{subproblem}
+        What is multistyle training and how does it improve noise-robustness? What are its drawbacks?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Multistyle training is a technique which is used to make the model more adaptable to noise, by training it on multiple speaking styles and many 
+    different acoustic environments. Whereas a traditional approach would imply that the model is trained on a single speaking environment and a
+    single way of pronounciating. In short, this style of tranining improves noise-robustness by doing the following three things, exposes the model
+    to a wider range of acoustic environments which enambles it to work even in noisy environments. A larger collection of different pronounciations
+    which will enable it to work for non-native people, thirdly it can help reduce overfitting as there are many different speaking styles and environments
+    which enables the model to generalise better.
+
+    However, there are some drawbacks to such a model and training style. Since it requires a multiple environments and speaking styles then this means
+    that the for each style we need many datapoints. Thus making the model computationally expensive and time-consuming. This can lead to the model
+    performing worse for certain speaking styles and environments, particularly if the dataset is not balanced. Further, multi-task training might not
+    work for all kinds of noise data, therefore we might require additional training styles or techniques for addressing noise in data.
+
+
+    % Sub-problem 2
+    \begin{subproblem}
+        What is spectral subtraction and how does it address noise-robustness? What are its drawbacks?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Spectral subtraction is used often for noise-reduction. This is done by removing the noise component of a speech signal by subtracting away the
+    estimate of the noise spectrum from the observed speech spectrum. This resulting cleaned speech spectrum can then be used for performing automatic
+    speech recognition. The noise-estimated spectrum is usually obtained by training a model to produce such estimates by using a noise only dataset.
+    The noise-estimated spectrum is then subtracted away from the observed speech spectrum on a frequency basis. The resulting speectrum is then passed
+    through an inverse Fourier transform.
+
+    Spectral subtraction can improve noise-robustness in several ways. First, it can remove noise from the speech signal, which can improve the accuracy 
+    of subsequent speech processing tasks such as speech recognition or speaker identification. Second, it can improve the quality of the speech signal, 
+    making it more intelligible and easier to understand. Third, it is a relatively simple and computationally efficient technique, making it easy to 
+    implement in real-time speech processing systems. However, spectral subtraction has some drawbacks. One major drawback is that it assumes that the 
+    noise spectrum is stationary, which may not be true in practice. If the noise is non-stationary or varies over time, spectral subtraction may not 
+    be able to effectively remove the noise component from the speech signal. Additionally, spectral subtraction can introduce distortion or artifacts 
+    in the cleaned speech signal, particularly if the noise spectrum estimate is inaccurate or if the subtraction process is not properly calibrated. 
+    Finally, spectral subtraction can sometimes result in a loss of speech information or intelligibility, particularly if the noise is very strong or 
+    if the speech signal is very low in volume.
+
+
+    % Sub-problem 3
+    \begin{subproblem}
+        How does discriminative training of the acoustic model of an HMM/GMM
+        speech recognition system differ from maximum likelihood parameter
+        estimation? Why does discriminative training usually increase speech
+        recognition accuracy?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Discriminative training of the acoustic model in an HMM/GMM speech recognition system differs from maximum likelihood parameter estimation in 
+    that it aims to directly optimize the model's ability to discriminate between different speech classes or targets, rather than simply maximizing 
+    the likelihood of the training data. Maximum likelihood parameter estimation involves estimating the parameters of the HMM/GMM model by maximizing 
+    the likelihood of the training data, given the model. This approach does not explicitly take into account the discriminative power of the model, 
+    and can result in a model that is not well-suited to the particular task of speech recognition.
+
+    Discriminative training, on the other hand, directly optimizes the model's ability to discriminate between different speech classes or targets, 
+    such as different phonemes or words. This is typically done by minimizing an objective function that measures the difference between the model's 
+    predicted output and the true target output. This approach can lead to a model that is better tailored to the specific task of speech recognition, 
+    and can improve the model's ability to distinguish between similar-sounding speech sounds. Discriminative training usually increases speech 
+    recognition accuracy because it explicitly optimizes the model's ability to discriminate between different speech sounds, and can therefore lead 
+    to a model that is better able to handle the variability in speech sounds caused by factors such as speaking style, accent, and background noise. 
+    Additionally, discriminative training can improve the robustness of the model to variations in the training data, and can lead to better 
+    generalization performance on unseen data.
+
+
+    % Sub-problem 4
+    \begin{subproblem}
+        Write down the objective function that is optimised in maximum mutual
+        information estimation (MMIE), and explain its relation to the objective
+        function used in maximum likelihood estimation (MLE).
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Maximum mutual information estimation (MMIE) is an approach to training the parameters of a speech recognition system that aims to directly 
+    optimize the mutual information between the speech input and the corresponding output labels. The MMIE approach is similar to maximum likelihood 
+    estimation (MLE) in that it seeks to estimate the model parameters that maximize the likelihood of the training data. However, MMIE introduces a 
+    regularization term that encourages the model to learn to produce more accurate posterior probabilities for the output labels, leading to better 
+    discrimination between different classes. The objective function used in MMIE is given by:
+
+    \begin{align}
+        F_{MMIE} &= \displaystyle\sum_{u=1}^{U} log P_{\lambda} (M(W_u) | \textbf{X}_u) \\
+                 &= \displaystyle\sum_{u=1}^{U} log \displaystyle\frac{P_{\lambda} (\textbf{X}_u | M(W_u)) P (W_u)}{\sum_{w'} P_{\lambda} (\textbf{X}_u | M(w'_u)) P(w'_u)}
+    \end{align}
+
+
+    % Sub-problem 5
+    \begin{subproblem}
+        How does minimum phone error (MPE) training differ from MMIE?
+    \end{subproblem}
+
+    \textbf{Answer}
 
     
 \end{homeworkProblem}
