@@ -95,8 +95,8 @@
 %   - Author
 %
 
-\newcommand{\hmwkTitle}{Past Paper May 2023}
-\newcommand{\hmwkDueDate}{April 24, 2023}
+\newcommand{\hmwkTitle}{Past Paper May 2014}
+\newcommand{\hmwkDueDate}{April 26, 2023}
 \newcommand{\hmwkClass}{ASR}
 \newcommand{\hmwkAuthorName}{\textbf{Patrick Tourniaire}}
 
@@ -333,6 +333,233 @@
         \mu_j = \displaystyle\frac{1}{T} \displaystyle\sum_{T}^{t=1} x_t
     \end{align}
 
+    % Sub-problem 2
+    \begin{subproblem}
+        If the time-state alignment is not known, how is a maximum likelihood estimate of $\mu_j$ obtained? Your answer should include a definition
+        of $\gamma_t (s_j)$, the state occupation probability of state $s_j$ at time $t$, and a
+        description of how $\gamma_t(s_j)$ is computed using the forward-backward algorithm.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    The expression for the estimated $\mu_j$ when the time-state alignment is not known, is given by the following.
+
+    \begin{align}
+        \hat{\mu}_j = \displaystyle\frac{\sum_{t=1}^{T} \gamma_t(s_j) x_t}{\sum_{t=1}^{T} \gamma_t(s_j)}
+    \end{align}
+    
+    The state occupation probability $\gamma_t(s_j)$ is the probability of occupying state $s_j$ at time $t$ given the sequence of observations. Which can
+    be expressed in terms of the forward and backward probabilities.
+
+    \begin{align}
+        \gamma_t(s_j) &= P(S(t) = s_j | X, \lambda) \\
+                      &= \displaystyle\frac{1}{\alpha_T(s_E)} \alpha_t(s_j) \beta_t(s_j) 
+    \end{align}
+
+    The foward and backward probabilities are given by the equations in Figure \ref{fig:/foward-prob} and \ref{fig:/backward-prob}, aswell as an explanatory visualisation for how these
+    likelihoods are indeed computed.
+
+    \begin{figure}
+        \minipage{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{figures/forward_prob.png}
+            \caption{Forward probability computation}
+            \label{fig:/foward-prob}
+        \endminipage\hfill
+        \minipage{0.48\textwidth}
+            \centering
+            \includegraphics[width=\textwidth]{figures/backward_prob.png}
+            \hspace{50mm}
+            \caption{Backward probability computation}
+            \label{fig:/backward-prob}
+        \endminipage
+    \end{figure}
+
+
+    % Sub-problem 3
+    \begin{subproblem}
+        In a large vocabulary speech recognition system for English, the fundamental
+        units of speech are typically context-dependent phone models.
+        Why is some degree of parameter sharing necessary when constructing
+        context-dependent phone models?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Parameter sharing is necessary when construction context-dependent phone models in a large vocabulary speech recognition system for English because there are
+    a large number of possible contextual variations that a phone can have, and it is not feasible to collect sufficient datat to model all of them independently.
+    Parameter sharing helps solve this by having the same set of parameters which are shared for multiple contexts, which also helps prevent overfitting.
+    
+
+    % Sub-problem 4
+    \begin{subproblem}
+        Which approach to parameter sharing is predominantly used in current
+        context-dependent acoustic models, and why is is preferred to alternative approaches?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    The approach to parameter sharing that is predominantly used in current context-dependent acoustic models is known as "tied-state" or "shared-state" modelling.
+    In this approach, multiple context-dependent states are tied together to share the same set of acoustic parameters, such as Gaussian mixture means and variances.
+    This approach is preferred to alternative approaches for several reasons.
+
+    \begin{itemize}
+        \item Parameter sharing reduces the number of parameters that need to be estimated, which leads to more efficient and faster training of the model.
+        \item Tied-state modelling helps to regularise the model and prevent overfitting, as the sharing of parameters encourages the model to generalise better to
+        new unseen contexts.
+        \item Tied-state modelling also reduces the risk of over-segmentation, where the model segments the speech signal into too many short segments, which can
+        lead to poor recognition performance.
+        \item Tied-state modelling has been shown to produce better recognition accuracy than other approaches, such as state clustering or decision tree clustering.
+    \end{itemize}
+
+    Overall, tied-state modelling is a powerful and widely used technique for parameter sharing in context-dependent acoustic models, as it provides a good balance
+    between modelling complexity and recognition accuracy.
+
+
+    % Sub-problem 5
+    \begin{subproblem}
+        How is a phonetic decision tree used to enable parameter sharing? (Your
+        answer does not need to include details of the splitting algorithm.)
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    A phonetic decision tree is used to enable parameter sharing in context-dependent acoustic models by grouping similar context-dependent states together, based
+    on their phonetic properties. An example of such a tree can be seen in Figure \ref{fig:/phonetic-tree}.
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.55\textwidth]{figures/phonetic-tree.png}
+        \caption{Example of a phonetic decision tree}
+        \label{fig:/phonetic-tree}
+    \end{figure}
+    
+    The tree is constructed by recursively splitting the states into two groups based on a phonetic feature, such as the identity of the preceding phone, the position
+    of the current phone within a word, or the identity of the following phone. The goal is to group states that have similar acoustic properties and share the same
+    acoustic parameters, and to seperate states that have different acoustic properties and require different properties.
+
+    Once the decision tree is constructed, each leaf node represents a context-dependent state, and the path from the root to the leaf node defines the set of phonetic features that characterize that state. The nodes along the path to the leaf node determine the context in which the state occurs, and the acoustic parameters associated with the leaf node are used to model the acoustic properties of the state.
+
+    The decision tree is used to enable parameter sharing by tying together context-dependent states that share the same path from the root to a common ancestor node. These tied states share the same acoustic parameters, which reduces the number of parameters that need to be estimated and improves the model's ability to generalize to new contexts.
+
+    In summary, a phonetic decision tree is used to group similar context-dependent states together and enable parameter sharing by tying together states that share the same phonetic context and acoustic properties. This approach helps to reduce the number of parameters that need to be estimated and improves the model's ability to generalize to new contexts.
+
 \end{homeworkProblem}
+
+
+% Problem 3
+\begin{homeworkProblem}
+
+    % Sub-problem 1
+    \begin{subproblem}
+        Explain how a neural network trained as a classifier may be used to
+        provide the output probabilities in a hybrid neural network / HMM
+        system.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    In a hybrid NN/HMM speech recognition the NN is typically used to provide the output probabilities for each frame of acoustic features, and the HMM
+    is used to model the temporal dynamics of speech. The NN is trained as a classifier to predict the posterior probabilities of the phone labels given
+    the input acoustic features. During training, the network is trained to minimize the corss-entropy loss between the predicted posterior and the true
+    phone labels.
+
+    At runtime, the NN is used to compute the posterior probabilities of the phone labels for each frame of acoustic features. These probabilities are
+    then used as emission probabilities in the HMM, which models the temporal dynamics of speech. The HMM computes the joint probability of the sequence
+    of phone labels and the sequence of observed acoustic features, using the forward-backward algorithm. This involves computing the likelihood of each
+    frame of acoustic features given each possible phone label, using the emission probabilities provided by the NN. The HMM also models the transitions
+    bwteen phone labels using transition probabilitie, which are estimated from the training data.
+
+
+    % Sub-problem 2
+    \begin{subproblem}
+        Discuss two approaches to speaker adaptation which may be used in a
+        hybrid neural network / HMM system.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Here are two common approaches using Linear Input Networks (LIN) and i-vectors. 
+
+    \begin{itemize}
+        \item Linear Input Network (LIN): LIN is a method for speaker adaptation that involves transforming the input features of the speech signal to
+        better match the speaker's voice characteristics. During training, a set of speaker-independent models is trained using a large corpus of speech
+        data from multiple speakers. Then, during adaptation, a linear transformation matrix is learned from a small amount of speaker-specific data, which
+        is used to transform the acoustic features to better match the speaker's voice characteristics. The transformed features are then used as input to
+        the neural network, which is trained using a technique such as backpropagatio. LIN is computationally effecicient and can be performed quickly in
+        real-time applications.
+        \item i-vectors: i-vectors are a method for speaker adaptation that models the distribution of speaker-dependent information in the speech signal
+        using a low-dimensional vector. During training, a set of speaker-independent models is trained using a large corpus of speech data from multiple
+        speakers. Then, during adaptation, an i-vector is extracted from a small amount of speaker-specific data, whichwhich captures the speaker-dependent
+        information in the speech signal. The i-vector is then used to adapt the acoustic models to better match then speaker's voice characteristics. The
+        adaption is typically performed using a technique such as maximum likelihood linear regression (MLLR) or maximum a posteriori (MAP) adaptation. 
+        i-vectors are a powerful approach for speaker adpatation, as they capture speaker-dependent information in a low-dimensional space and can be used
+        to adapt a wide range of acoustic models.
+    \end{itemize}
+
+
+    % Sub-problem 3
+    \begin{subproblem}
+        Compare and contrast the following three approaches to language modelling:
+        \begin{itemize}
+            \item Smoothed 4-gram model
+            \item Bengio’s neural probabilistic language model with inputs corresponding
+            to the three previous words
+            \item Mikolov’s recurrent neural network (RNN) language model
+        \end{itemize}
+        Your answer should refer to: the structure of the models and how they
+        represent words; how they are trained; and how they may be used for speech
+        recognition.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Smoothed 4-gram model, Bengio's neural probabilistic model, and Mikolov's recurrent neural network (RNN) language model are all approached to language
+    modelling, but they differ in their structures, training methods and how they are used for speech recognition.
+
+    \vspace{5mm}
+    \textit{Smoothed 4-Gram Model}
+
+    \textbf{Structure:} a smoothed 4-gram model is a statistical language model that calculates the probability of a word given the three previous words
+    in the sentence. The model represents words as discrete symbols and stores their frequencies in a large n-gram table.
+
+    \textbf{Training:} the model is trained on a large corpus of text, where the frequencies of word n-grams are counted and smoothed using techniques like
+    Laplace or Kneser-Ney smoothing. The model is then used to predict the probability of a word given its preceding three words.
+
+    \textbf{Speech recognition:} the smoothed 4-gram model is commonly used in speech recognition systems as a language model to constrain the search space 
+    and improve recognition accuracy. The model is typically combined with an acoustic model, such as a HMM, to perform speech recognition.
+
+    
+    \vspace{5mm}
+    \textit{Bengio's Neural Probabilistic Language Model}
+
+    \textbf{Structure:} Bengio's neural probabilistic language model is a feedforward neural network that takes as input the embeddings of the three previous
+    words and predicts the probability distribution over the next word in the sentence. The model represents words as continous-valued vectors (embeddings)
+    that are learned during training.
+    
+    \textbf{Training:} the model is trained on a large corpus of text using backpropagation and stochastic gradient descent. During training, the model learns
+    to map the embeddings of the three previous words to a probability distribution over the vocabulary.
+
+    \textbf{Speech recognition:} Bengio's neural probabilistic language model is a feedforward neural network can be used in speech recognition systems in a similar
+    way as the smoothed 4-gram model, as a language model to constrain the search space and improve recognition accuracy.
+
+
+    \vspace{5mm}
+    \textit{Mikolov's RNN Language Model}
+
+    \textbf{Structure:} Mikolo's RNN language model is a type of NN that uses reccurent connections to model the sequence of words in a sentence. The model takes as
+    input the embeddings of the current word and the hidden state of the previous time-step, and predicts the probability distribution over the next word. The model
+    represents words as continuous-valued vectors (embeddings) that are learned during training.
+
+    \textbf{Training:} the model is trained on a large corpus of text using back-propagation through time and stochastic gradient descent. During training, the model
+    learns to map the embeddings of the current word and the previous hidden state to a probability distribution over the vocabulary.
+
+    \textbf{Speech recognition:} Mikolov's RNN language model can also be used in speech recognition systems as a language model to constrain the search space and
+    improve recognition accuracy. However, RNN language models may be computationally more expensive than simpler models like 4-gram models or Bengio's neural
+    probabilistic language model.
+
+
+\end{homeworkProblem}
+
 
 \end{document}
