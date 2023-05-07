@@ -1,0 +1,378 @@
+\documentclass{article}
+
+\usepackage{fancyhdr}
+\usepackage{extramarks}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{tikz}
+\usepackage[plain]{algorithm}
+\usepackage{algpseudocode}
+\usepackage{placeins}
+\usepackage{tcolorbox}
+
+\usetikzlibrary{automata,positioning}
+
+%
+% Basic Document Settings
+%
+
+\topmargin=-0.45in
+\evensidemargin=0in
+\oddsidemargin=0in
+\textwidth=6.5in
+\textheight=9.0in
+\headsep=0.25in
+
+\linespread{1.1}
+
+\pagestyle{fancy}
+\lhead{\hmwkAuthorName}
+\chead{\hmwkClass\: \hmwkTitle}
+\rhead{\firstxmark}
+\lfoot{\lastxmark}
+\cfoot{\thepage}
+
+\renewcommand\headrulewidth{0.4pt}
+\renewcommand\footrulewidth{0.4pt}
+
+\setlength\parindent{0pt}
+
+\newtheorem{subproblem}{Subproblem}
+
+\tcbuselibrary{theorems}
+
+\newtcbtheorem[number within=section]{mytheo}{Definition}%
+{colback=blue!5,colframe=blue!35!black,fonttitle=\bfseries}{th}
+
+%
+% Create Problem Sections
+%
+
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{Problem \arabic{#1} (continued)}{Problem \arabic{#1} continued on next page\ldots}\nobreak{}
+    \stepcounter{#1}
+    \nobreak\extramarks{Problem \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Problem \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+%
+% Homework Problem Environment
+%
+% This environment takes an optional argument. When given, it will adjust the
+% problem counter. This is useful for when the problems given for your
+% assignment aren't sequential. See the last 3 problems of this template for an
+% example.
+%
+\newenvironment{homeworkProblem}[1][-1]{
+    \ifnum#1>0
+        \setcounter{homeworkProblemCounter}{#1}
+    \fi
+    \section{Problem \arabic{homeworkProblemCounter}}
+    \setcounter{partCounter}{1}
+    \enterProblemHeader{homeworkProblemCounter}
+}{
+    \exitProblemHeader{homeworkProblemCounter}
+}
+
+%
+% Homework Details
+%   - Title
+%   - Due date
+%   - Class
+%   - Section/Time
+%   - Instructor
+%   - Author
+%
+
+\newcommand{\hmwkTitle}{Past Paper May 2016}
+\newcommand{\hmwkDueDate}{May 1, 2023}
+\newcommand{\hmwkClass}{ASR}
+\newcommand{\hmwkAuthorName}{\textbf{Patrick Tourniaire}}
+
+%
+% Title Page
+%
+
+\title{
+    \vspace{2in}
+    \textmd{\textbf{\hmwkClass:\ \hmwkTitle}}\\
+    \normalsize\vspace{0.1in}\small{Completed\ on\ \hmwkDueDate}\\
+    \vspace{3in}
+}
+
+\author{\hmwkAuthorName}
+\date{}
+
+\renewcommand{\part}[1]{\textbf{\large Part \Alph{partCounter}}\stepcounter{partCounter}\\}
+
+%
+% Various Helper Commands
+%
+
+% Useful for algorithms
+\newcommand{\alg}[1]{\textsc{\bfseries \footnotesize #1}}
+
+% For derivatives
+\newcommand{\deriv}[1]{\frac{\mathrm{d}}{\mathrm{d}x} (#1)}
+
+% For partial derivatives
+\newcommand{\pderiv}[2]{\frac{\partial}{\partial #1} (#2)}
+
+% Integral dx
+\newcommand{\dx}{\mathrm{d}x}
+
+% Alias for the Solution section header
+\newcommand{\solution}{\textbf{\large Solution}}
+
+% Probability commands: Expectation, Variance, Covariance, Bias
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\Bias}{\mathrm{Bias}}
+
+\begin{document}
+
+\maketitle
+
+\pagebreak
+
+
+% Problem 1
+\begin{homeworkProblem}
+    
+    % Sub-problem 1
+    \begin{subproblem}
+        Spectral domain filter-bank features are now widely used in neural network acoustic models in preference to mel frequency cepstral coefficients
+        (MFCCs). Why is this? – and why are filter bank features rarely used for
+        acoustic models based on Gaussian mixture models (GMMs)?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Spectral domain filter-bank features are now widely used in neural network acoustic mdoels in preference to mel frequency cepstral coefficients (MFCCs)
+    for several reasons.
+
+    \begin{itemize}
+        \item Improved discriminability: filter-bank features have been shown to have better discriminability for speech recognition tasks compared to MFCCs.
+        This is because filter-bank features are designed to capture the spectral characteristics of speech in a more fine-grained way, while MFCCs are based
+        on a logarithmic compression of the frequency spectrum.
+
+        \item Better integration with NN: NN are well-suited for learning complex representations from high-dimensional inputs. Filter-bank features can provide
+        a richer input representationfor neural networks than MFCCs, as they capture more spectral information.
+
+        \item Simplicity: computing filter-bank featrues is computationally simpler than computing MFCCs, as the former does not require the computation of the
+        discrete cosine transform (DCT).
+    \end{itemize}
+
+    In contrast, GMMs are computationally less efficient than NN and require a larger number of features for accurate modelling. This is because GMMs require the
+    estimation of a large number of paramaters, which can be computationally expensive. While computing filter-bank features may be computationally simpler than
+    computing MFCCs, it can still be a bottleneck in GMM-based systems due to the large number of features required for accurate modeling. Additionally, filter
+    bank features have a high degree of correlation with each other due to their spectral overlapping nature. this redundancy can lead to overfitting in GMM-based
+    systems, where the number og Gaussian components is limited due ti computational constraints.
+
+
+    % Sub-problem 2
+    \begin{subproblem}
+        What are the main characteristics of a log mel filterbank used for feature
+        extraction with a neural network acoustic model? What features of human
+        hearing are related to the computation of these features?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    A log mel filter-bank is a set of filters applied to the magnitude spectrum of a speech signal in order ot extract acoustic features that are relevant for
+    speech recognition. The main characteristics of a log mel filter-bank used for feature extract with a NN acoustic model are.
+
+    \begin{itemize}
+        \item Logarithmic scale: the filter-bank is constructed on a logarithmic scale of frequency, as this is more in line with human perception of sound 
+        \textit{(frequency resolution)}. The logarithmic scale allows for a better representation of low-frequency components and a more uniform distribution
+        of filter across the frequency spectrum.
+
+        \item Mel scale \textit{(pitch perception)}: the filters are space according to the mel scale, which is a non-linear transformation of frequency that is based on the preception
+        of pitch in human hearing. The mel scale has been found to provide a better representation of speech signals than a linear frequency scale.
+
+        \item Overlapping filters \textit{(critical bands)}:the filters in the log mel filter-ank overlap in frequency, with adjecent filters overlapping by 50\%
+        or more. This allows for a better representation of the spectral characteristics of speech signals.
+
+        \item Triangular shape: the filters in the log mel filterbank are typically triangular in shape. This is because the mel scale is not linear and so the width of the
+        filters needs to vary according to frequency in order to maintain a uniform coverage of the spectrum.
+    \end{itemize}
+
+
+    % Sub-problem 3
+    \begin{subproblem}
+        Outline two ways in which neural networks can be used to generate features
+        for an acoustic model. What advantages do such features bring to a speech
+        recognition system.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    There are many way one can use NN architectures to generate features for an acoustic model. However, two traditional examples include CNNs and LSTMs.
+
+    \begin{itemize}
+        \item Concolutional neural networks (CNNs): can be trained to learn feature representations directly from the raw waveform of speech signals. These features are typically
+        learned in a hierarical manner, where lower layers of the network learn low-level features such as frequency filters, and higher layers learn more abstract representations.
+        The output of the final layer of the CNN can be used as input features to an acoustic model.
+
+        \item Long short-term memory (LSTMs): LSTMs can be used directly with raw waveforms for temporal modelling, but higher level modelling of the features helps to disentangle
+        underlying factors of variation within the input. Further, the LSTM cells are able to capture long-term dependencies in the input signal. LSTMs are also robust to variations
+        in the acoustic environment, as they can learn features that are invariant to changes in noise level, , and other acoustic factors.
+    \end{itemize}
+
+
+    % Sub-problem 4
+    \begin{subproblem}
+        In what circumstances might the fundamental frequency $F0$ be a useful feature for a speech recognition system?
+    \end{subproblem}
+
+    \begin{mytheo}{What is the fundemental frequency $F0$?}{fundemental-freq}
+        The fundamental frequency of a speech signal, often denoted by F0 or F0, refers to the approximate frequency of the (quasi-)periodic structure of voiced speech signals. The oscillation originates from the vocal folds, which oscillate in the airflow when appropriately tensed. The fundamental frequency is defined as the average number of oscillations per second and expressed in Hertz. Since the oscillation originates from an organic structure, it is not exactly periodic but contains significant fluctuations. In particular, amount of variation in period length and amplitude are known respectively as jitter and shimmer. Moreover, the F0 is typically not stationary, but changes constantly within a sentence. In fact, the F0 can be used for expressive purposes to signify, for example, emphasis and questions.
+
+        Typically fundamental frequencies lie roughly in the range 80 to 450 Hz, where males have lower voices than females and children. The F0 of an individual speaker depends primarily on the length of the vocal folds, which is in turn correlated with overall body size. Cultural and stylistic aspects of speech naturally have also a large impact.
+
+        The fundamental frequency is closely related to pitch, which is defined as our perception of fundamental frequency. That is, the F0 describes the actual physical phenomenon, whereas pitch describes how our ears and brains interpret the signal, in terms of periodicity. For example, a voice signal could have an F0 of 100 Hz. If we then apply a high-pass filter to remove all signal components below 450 Hz, then that would remove the actual fundamental frequency. The lowest remaining periodic component would be 500 Hz, which correspond to the fifth harmonic of the original F0. However, a human listener would then typically still perceive a pitch of 100 Hz, even if it does not exist anymore. The brain somehow reconstructs the fundamental from the upper harmonics. This well-known phenomenon is however still not completely understood. 
+    \end{mytheo}
+
+    \textbf{Answer}
+
+    The fundemental frequency (F0) is the frequency of the lowest harmonic of the voice signal, and it can carry important information about the speaker, the language, and the prosody of speech.
+    In some circumstances, F0 can be a useful feature for a speech recognition system, such as:
+
+    \begin{itemize}
+        \item Speaker recognition: $F0$ is a speaker-dependent feature that can be used for speaker identification or verification. Since $F0$ varies grately between speakers, it can be used as a feature
+        for speaker modelling in speaker recognition systems.
+        
+        \item Emotion recognition: $F0$ can be used as a feature for emotion recognition, as the pitch of the voice is closely related to the emotional state of the speaker. For example, high $F0$ values
+        may be associated with excitement or anxiety, while low $F0$ values may be associated with sadness or depression.
+
+        \item Tone languages: in tone languages, such as Mandarin or Cantonese, the pitch contour of speech is used to distinguish between words with different meanings. In these languages $F0$ can be a useful
+        feature for speech recognition, as it provides important information about the lexical feature for speech recognition, as it provides important information about the lexical and syntactic structure of the language.
+
+        \item Noisy environments: $F0$ can be useful in noisy environments, as it is less affected by noise than other spectral features. This is because $F0$ is a periodic feature that is less affected by noise than
+        spectral features, which are based on the energy distribution of the signal.
+    \end{itemize}
+
+
+    % Sub-problem 5
+    \begin{subproblem}
+        Recently there has been a lot of interest in using raw waveforms as direct
+        input to neural network acoustic models. What potential advantages could
+        motivate this approach? What are the drawbacks?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Using raw waveforms as direct input to NN acoustic models has several potential advantages.
+
+    \begin{itemize}
+        \item Improved feature representation: by using raw waveforms, the model can capture more detailed and subtle aspects for the speech signal that may not be captured by traditional feature extraction
+        techniques.
+
+        \item Simplified processing pipeline: the use of raw waveforms eliminates the need for complex signal processing pipelines.
+        
+        \item Reduced training time: since the feature extraction step is eliminated, training times may be reduced as the network can learn directly from the raw data.
+    \end{itemize}
+
+    However, there are also some potential drawbacks to using raw waveforms:
+
+    \begin{itemize}
+        \item Increased computational complexity: raw waveforms are  generally larger in size than traditional feature representations, which can lead to increased computational complexity during training and inference.
+        \item Increased memory requirements: takes up more memory due to the size, can be a concern for low memory resources.
+        \item Increased training data requirements: training a NN on raw waveforms requires significantly more data than training on traditional feature representations, which can be a challenge if sufficient data is not available.
+        \item Limited interpretability: raw waveforms are inherently less interpretable than traditional feature representations, which can make it difficult to diagnose and correct errors in the system.
+    \end{itemize}
+
+\end{homeworkProblem}
+
+
+% Problem 2
+\begin{homeworkProblem}
+    
+    % Sub-problem 1
+    \begin{subproblem}
+        Explain concisely how Viterbi training of a hidden Markov model (HMM)
+        differs from training using the forward-backward algorithm. What are the
+        advantages of forward-backward training?
+    \end{subproblem}
+
+    \textbf{Answer}
+    
+    Viterbi training and forward-backward training are two methods for training HMMs. The main difference between the two is the way they estimate the model parameters. In Viterbi training, the MLE of the
+    HMM parmaeters is obtained by aligning the training data with the model's most likely state sequence using the Viterbi algorithm. The Viterbi algorithm calculates
+    the most likely sequence of hidde states that generated the observed data. The model parameters are then updated based in the state sequence alignment.
+
+    In contrast, forward-backward training uses the forward and backward algorithms to compute the posterior probabilities of the hidden states given the observations. The model parameters are then updated
+    based on these parameters. The advantage of forward-backward training is that it takes into account all possible state sequences and can provide more accurate estimates of the model parameters. Viterbi
+    training, on the other hand, only considers the most likely state sequence and may produce biased estimates if the data is noisy or the model is complex. However, Viterbi training is computationally more
+    efficient then forward-backward training and may be preferred in some applications.
+
+
+    % Sub-problem 2 
+    \begin{subproblem}
+        How is Viterbi training used to train a hybrid neural network – HMM system? Could forward-bakward training be used in this case? How would the
+        neural networks be trained?
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    Viterbi training can be used ti train the HMM part of a hybrid HMM/NN system. In this approach, the NN is used to estimate the emission probabilities for each state in the HMM. The Viterbi algorithm is
+    then used to find the most likely state sequence given the observed data and the HMM parameters are updated based on this alignment. The NN is then retrained using the updated HMM parameters, and the 
+    process is repeated until convergence.
+
+    It is possible to use the forward-backward in this context, but it requires additional computation and is less commonly used. In forward-backward training, the NN is trained to predict the posterior
+    probabilities of the HMM states given the input features, and these probabilities are used ti update the HMM model parameters. The NN is then fine-tuned using backpropagation to further improve its
+    predictions.
+
+
+    % Sub-problem 3
+    \begin{subproblem}
+        A phonetic decision tree is used to obtain state-clustered context-dependent
+        models. How is the log likelihood used to determine state splitting? Assuming each state has a single Gaussian pdf explain how the log likelihood of a
+        state can be computed efficiently.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    The log likelihood is used to determine the splitting of states in a phonetic decision tree by computing the log likelihood ratio between the original state and the two candidate split states. If the
+    log likelihood ratio exceeds a predefined threshold, the state is split into two child states, and the process is recursively applied to each child state. Assuminb each state has a single Gaussian PDF,
+    the likelihood of a state can be computed efficiently using the following states.
+
+    \begin{enumerate}
+        \item Compute the mean vector and the covariance matrix of the Gaussian PDF for the state using the training data.
+        \item For each training sequence, compute the log likelihood of the sequence under the Gaussian PDF for the state using the formula.
+            \begin{align}
+                log P(\boldsymbol{O} | \mu, \Sigma) = - \dfrac{1}{2} log|\Sigma| - \dfrac{D}{2} log(2 \pi) - \dfrac{1}{2 \pi} (\boldsymbol{O} - \mu)^{\top} \Sigma^{-1} (\boldsymbol{O} - \mu) 
+            \end{align}
+        Where $\boldsymbol{O}$ is the observation sequence, $\mu$ is the mean vector, $\Sigma$ is the covariance matrix, and $D$ is the dimension of the observation vector.
+        \item Sum the log likelihoods of all training sequences to obtain the total log likelihood of the state.
+    \end{enumerate}
+
+    Since each state has a single Gaussian PDF, the covariance matrix is diagonal, and its determinant can be computed efficiently. The matrix inverse in the log likelihood formula can also be computed
+    efficiently using the diagonal elements of the inverse covariance matrix. The results in a computationally efficient method for computing the log likelihood of a state.
+
+
+    % Sub-problem 4
+    \begin{subproblem}
+        Explain how scaled likelihoods are obtained from the neural network in a
+        hybrid system and why the outputs of the neural network are not used
+        directly. If the system was to be used for TIMIT phone recognition (rather
+        than large vocabulary speech recognition) would it be necessary to compute
+        the scaled likelihoods? Justify your answer.
+    \end{subproblem}
+
+    \textbf{Answer}
+\end{homeworkProblem}
+
+\end{document}
