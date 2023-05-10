@@ -265,11 +265,162 @@
     
     % Sub-problem 1
     \begin{subproblem}
-        
+        For the HMM described above, list the frames that can be aligned to each
+        HMM state in the example. Briefly explain or illustrate your reasoning.
     \end{subproblem}
+
+    \textbf{Answer}
+
+    \begin{figure}[h]
+        \centering
+        \includegraphics[width=0.65\textwidth]{figures/Q2_ALIGNMENT.png}
+        \caption{HMM/DNN acoustic frame alignment}
+        \label{fig:/q2_alignment}
+    \end{figure}
+    
+
+    % Sub-problem 2
+    \begin{subproblem}
+        When training a hybrid HMM-DNN model, the cross entropy objective function is often used. Explain how this differs from the EM algorithm used to
+        train standard HMM systems.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    The EM algorithm is an iterative unsupervised optimisation algorithm, which can optimise probabilistic models such as HMMs when the training data includes
+    latent veriables. It consists of two steps; the E-step which computes tge expected sufficien statistics if the latent variables given the current model
+    parameters, and the M-step, which updates the model parameters based in these expected statistics. In contrast, the standard corss entropy objective function
+    is a supervised technique which relies on labeled data to optimise the parameters of a neural network. This objective function then forms the loss field which
+    an optimiser such as gradient descent can traverse to hopefully find a global minima.
+
+    The main difference between these methods are the fact that the EM-algorithm learns the underlying data distribution directly from the data. Whereas the
+    cross-entropy method achieves optimisation by directly using labeled data during training. The hybrid HMM/DNN model combines both these techniques such that
+    the DNN model estimates the posterior probabilities using the corss-entropy objective and the HMM uses the M-step to further optimise using these posteriors.
+
+
+    % Sub-problem 3
+    \begin{subproblem}
+        If all possible alignments are equally likely, what would be the contribution
+        to the cross-entropy objective function from
+        
+        \begin{itemize}
+            \item frame 3?
+            \item frame 6?
+        \end{itemize}
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    For frame 3 it is possible for either "O" or "G" being aligned to it. Therefore, the cross-entropy contributions would be the following.
+
+    \begin{align}
+        \text{"O": } E_O^3 = - ln 0.5 \approx 0.6931 \\
+        \text{"G": } E_G^3 = - ln 0.5 \approx 0.6931
+    \end{align}
+
+    For frame 6 however, it will only be possible for character "G" to be aligned with it. Therefore, the cross-entropy becomes.
+
+    \begin{align}
+        \text{"G": } E_G^6 = - ln 1.0 = - 0 = \text{undefined}
+    \end{align}
+
+
+    % Sub-problem 4
+    \begin{subproblem}
+        Consider instead a character-based CTC model. List the frames that could
+        be aligned to each of the CTC states.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    In a character-based CTC model, each character is modeled by a CTC state. The CTC states are constructed such that they can generate any valid character
+    sequence with any possible length, even if some characters are repeated or blank. The blank symbol $\epsilon$ is used to seperate repeated characters and
+    to insert gaps between characters. In the given example of aligning the word "GOOD" to a sequence of 6 input vectors, we can construct the following CTC
+    states and corresponding alignments.
+
+    \begin{itemize}
+        \item CTC state for "G": Frame 1 can be aligned to the "G" state.
+        \item CTC state for "O": Frames 2 and 3 can be alignmed to the "O" state.
+        \item CTC state for "D": Frames 4 and 5 can be aligned to the "D" state.
+        \item Final blank state: Frame 6 can be aligned to the final blank state, which is used to indicate the end of the output sequence.
+    \end{itemize}
+
+    Note that there are multiple valid alignments, depending on the number of blanks inserted between characters and at the beginning and end of the sequence.
+    The CTC algorithm computes the probability of all possible alignments and finds the most likely alignment using the forward-backward algorithm.
+
+
+    % Sub-problem 5
+    \begin{subproblem}
+        Considering your answers above, and anything else you think is relevant,
+        comment on the practical differences between cross entropy training of an
+        HMM-DNN, and CTC training.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    In terms of handling variable-length inputs and outputs, CTC training has an advantage over cross-entropy training of an HMM/DNN. With CTC, the alignment 
+    between the input and output is not explicitly determined, making it more flexible in handling variable-length input and outputs. In contrast, with HMM/DNN,
+    alignment is determined by the Viterbi algorithm which can be computationally expensive, and less felxible in handling variable-length inputs and outputs.
+
+    However, one disadvantage of CTC is that it can be challenging to learn to align long sequences with many repreated characters correctly, as it requires modeling
+    the distribution of repeated characters in the output sequence via the pronounciation dictrionary, which can be helpful in recognising long sequences wit repeated
+    characters. Another difference is that CTC models can directly output charcter sequences, while HMM/DNN models usually output a sequence of phone or subword units,
+    which need to be converted ti characters using a seperate decoding step.
+
+
+    % Sub-problem 6
+    \begin{subproblem}
+        A Listen Attend and Spell model adopts yet another approach to alignment
+        of training data. Briefly explain how alignment is performed in this model,
+        and comment on the advantages and disadvantages of this approach.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    The listen attend and spell (LAS) model is a sequence-to-sequence NN model that can be used for speech rcognition. Unlike traditional HMM-based models or CTC models,
+    the LAS model does not require a pre-specified alignment between the input speech features and the output text transcription during training. Instead, the LAS model
+    uses an attention mechanism to dynamically align the input speech features with the output text during training, At each time step, the attention mechanism compute a 
+    context vector that is a weighted sum of the encoder outputs (i.e., the output of the NN that processes the input speech features) based on their relevance to the
+    current decoding step.
+
+    The advantages of this approach are that it allows the model to learn more flexible and accurate alignments between the input speech features and the output text, and
+    it does not requrie the pre-processing step of generating forced alignments. This can be particularly useful in cases where the speech signal contains variability, such
+    as different speaking rates or dialects. However, the disadvantage of this approach are that it can be more computationally intensive and may require more training data
+    to learn the alignments accuratly. Additionally, the attention mechanism can sometimes focus on irrelevant parts of the input speech signal, leading to reduced accuracy.
 
 \end{homeworkProblem}
 
 
+\begin{homeworkProblem}
+
+    % Sub-problem 1
+    \begin{subproblem}
+        Draw an example grammar (G) WFST that could be used to recognise the
+        score announcements. You need only draw sufficent arcs to illustrate the
+        concepts clearly.
+    \end{subproblem}
+
+    \textbf{Answer}
+
+    \begin{figure}[ht]
+        \centering
+        \includegraphics[width=0.65\textwidth]{figures/q3_wfst.png}
+        \caption{WFST for Eurovision announcements}
+        \label{fig:/q3_wfst}
+    \end{figure}
+    \FloatBarrier
+    
+
+    % Sub-problem 2
+    \begin{subproblem}
+        Draw illustrations of HMM (H) and lexicon (L) WFSTs that could be used
+        in your system (you can assume that the system uses context-independent
+        phones). Also illustrate the composed L ◦ G WFST, using your answer to
+        part (a).
+    \end{subproblem}
+
+    \textbf{Answer}
+
+\end{homeworkProblem}
 
 \end{document}
